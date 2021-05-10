@@ -18,12 +18,11 @@ function Login() {
         password,
       })
       .then((res) => {
-        console.log("login", res);
         if (!res.data.auth) {
           setIsLoggedIn(false);
         } else {
-          setIsLoggedIn(true);
           setAuthToken(res.data.token);
+          setIsLoggedIn(true);
         }
       })
       .catch((err) => console.log(err));

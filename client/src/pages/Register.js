@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 import { Form, Button, Card, Input } from "../components/LoginRegisterForm";
 
 function Register() {
   const [userName, setUserName] = useState("");
   const [password, setpassword] = useState("");
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isUserCreated, setUserCreated] = useState(false);
 
   const register = () => {
     axios
@@ -16,9 +16,18 @@ function Register() {
       })
       .then((data) => {
         console.log(data);
+        if (data.data.status === 200) {
+          setUserCreated(true);
+        } else {
+          setUserCreated(false);
+        }
       })
       .catch((err) => console.log(err));
   };
+
+  if (isUserCreated) {
+    return <Redirect to="/login" />;
+  }
 
   return (
     <div className="App">

@@ -5,48 +5,37 @@ import { Item, Grid } from "./../components/Home";
 import axios from "axios";
 
 function Home() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const { getAuthToken, authToken } = useAuth();
+  const { authToken } = useAuth();
+  const [cities, setCities] = useState([]);
 
-  //   useEffect(() => {
-  //     userAuthenticated();
-  //   }, []);
-
-  const userAuthenticated = () => {
-    // getAuthToken();
-    if (!authToken) {
-      setIsLoggedIn(false);
-    }
-    console.log(authToken);
+  useEffect(() => {
     axios
-      .get("http://localhost:3001/isUserAuth", {
+      .get("http://localhost:3001/getCities", {
         headers: {
           "x-access-token": authToken,
         },
       })
-      .then((response) => {
-        if (!response.data.auth) {
-          setIsLoggedIn(false);
+      .then((res) => {
+        if (res.data.status === 200) {
+          setCities(res.data.cities);
         } else {
-          setIsLoggedIn(true);
+          setCities([]);
         }
-      });
-  };
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
-  //   if (!isLoggedIn) {
-  //     return <Redirect to="/login" />;
-  //   }
+  if (!authToken) {
+    return <Redirect to="/login" />;
+  }
 
   return (
     <div className="App">
       <h1>Citites</h1>
       <Grid>
-        <Item>1</Item>
-        <Item>2</Item>
-        <Item>3</Item>
-        <Item>4</Item>
-        <Item>5</Item>
-        <Item>6</Item>
+        {cities.map((city) => (
+          <Item>{city.name}</Item>
+        ))}
       </Grid>
     </div>
   );

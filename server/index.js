@@ -2,13 +2,14 @@ const express = require("express");
 const mysql = require("mysql2");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const cities = require("./data/cities.json");
 
 const app = express();
 
 const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "your_password",
+  password: "your_password_here",
   database: "login_system",
 });
 
@@ -79,7 +80,11 @@ const verifyJWT = (req, res, next) => {
 };
 
 app.get("/isUserAuth", verifyJWT, (req, res) => {
-  res.send({ message: "You are authenticated" });
+  res.send({ auth: true, message: "You are authenticated" });
+});
+
+app.get("/getCities", verifyJWT, (req, res) => {
+  res.send({ status: 200, cities });
 });
 
 app.listen(3001, () => {

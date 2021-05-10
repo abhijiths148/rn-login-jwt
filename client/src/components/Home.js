@@ -4,8 +4,8 @@ const Item = styled.div`
   display: flex;
   justify-content: center;
   padding: .5rem;
-  background: linear-gradient(to bottom, #6371c7, #5563c1);
-  color: 'white';
+  background: linear-gradient(to bottom, #c5fafe, #5563c4);
+  color: white;
   font-size: 18px;
   font-weight: bold;
 `;
