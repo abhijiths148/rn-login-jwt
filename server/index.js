@@ -1,4 +1,5 @@
 const express = require("express");
+const config = require('config');
 const mysql = require("mysql2");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
@@ -49,7 +50,7 @@ app.post("/login", (req, res) => {
       if (results.length > 0) {
         console.log(results);
         const user = results[0].username + results[0].password;
-        const token = jwt.sign({ user }, "jwtSecret", {
+        const token = jwt.sign({ user }, config.get("myprivatekey"), {
           expiresIn: 300,
         });
         console.log(token);
@@ -66,7 +67,7 @@ const verifyJWT = (req, res, next) => {
   if (!token) {
     res.send("token missing!");
   } else {
-    jwt.verify(token, "jwtSecret", (err, decoded) => {
+    jwt.verify(token, config.get("myprivatekey"), (err, decoded) => {
       if (err) {
         console.log(err);
         res.json({ auth: false, message: "Failed to authenticate" });
